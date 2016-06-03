@@ -1,0 +1,39 @@
+#!/bin/bash
+
+ip=`ifconfig eth0 | grep "inet addr" | cut -d ":" -f 2 | cut -d " " -f 1 | cut -d "." -f 1-4`
+BackDir="/pic.zufangzi.com/baklog/$ip"
+
+#备份四路很不存在则创建路径
+if [ ! -d $BackDir ]; then
+  mkdir -p $BackDir
+fi
+
+RmFile=`find $BackDir -type f -mtime +30`
+##删除超过30天的备份文件
+for file in $RmFile
+do
+    /bin/rm -f $file
+done
+
+
+#取本机tomcat列表
+fileList=`ls -dF  /usr/local/tomcat* | grep "/$"`
+for list in $fileList
+do
+    tomcatdir=`echo "$list" | awk -F '/' '{print $4}'`
+    
+    if [ ! -d $BackDir/$tomcatdir ]; then
+        mkdir -p $BackDir/$tomcatdir
+    fi
+
+###压缩移动日志文件
+    tomcatFile=`find "$list"logs -type f -mtime +1`
+
+    for tfile in $tomcatFile
+    do
+        tar -czvf $tfile.tar.gz $tfile
+        rm -rf $tfile
+        mv $tfile.tar.gz $BackDir/$tomcatdir
+    done
+
+done

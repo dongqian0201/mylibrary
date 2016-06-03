@@ -1,0 +1,11 @@
+iptables Ìí¼Ó
+-A OUTPUT -s 59.151.109.231 -p tcp -m tcp --sport 80
+
+
+#!/bin/sh
+
+echo `date` >> /root/ipsave/ipsave.txt
+
+/sbin/iptables -n -v -L -t filter -x | grep OUTPUT >> /root/ipsave/ipsave.txt
+/sbin/iptables -n -v -L -t filter | grep OUTPUT >> /root/ipsave/ipsave.txt
+echo -e '\n' >> /root/ipsave/ipsave.txt

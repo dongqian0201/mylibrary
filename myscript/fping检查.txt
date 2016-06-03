@@ -1,0 +1,9 @@
+web232=`/usr/local/sbin/fping 59.151.109.232`
+if [ ${web232##*is} = "alive" ]
+then
+echo `date` $web232 >> /usr/local/eventftmscheckload/fping/ok
+else
+echo "`date`pingeventftmsweb232err" | mail -s "pingeventftmsweb232err" dong.qian@frontnetwork.com
+echo "`date`pingeventftmsweb232err" | mail -s "pingeventftmsweb232err" tang.rui@frontnetwork.com
+echo `date` $web232 >> /usr/local/eventftmscheckload/fping/err
+fi

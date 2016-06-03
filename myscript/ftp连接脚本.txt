@@ -1,0 +1,13 @@
+cd /root/cron/
+echo `date` > /root/cron/up.test2
+ftp -n <<!
+open 59.151.109.230
+user lcclub @f!iwvY7
+lcd /root/cron
+bin
+cd /
+put toyotaftp2.jpg
+put up.test2
+put temp2
+get lc.php
+bye

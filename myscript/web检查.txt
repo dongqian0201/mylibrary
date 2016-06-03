@@ -1,0 +1,10 @@
+wget -P /usr/local/eventftmscheckload/web232check  http://59.151.109.232/checkload
+web232=/usr/local/eventftmscheckload/web232check/checkload
+if diff  $filecheck $web232 > /dev/null
+then
+echo "web2ok" > /usr/local/eventftmscheckload/ok
+else
+echo "eventftmsweb2err" | mail -s "eventftmsweb2err" dong.qian@frontnetwork.com
+echo "eventftmsweb2err" | mail -s "eventftmsweb2err" tang.rui@frontnetwork.com
+echo "web2err" > /usr/local/eventftmscheckload/err
+fi

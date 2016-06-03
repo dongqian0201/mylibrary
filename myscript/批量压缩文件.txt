@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+echo $#
+if [ $# -lt 1 ]; then
+    echo 没有命令行参数
+    exit 1;
+fi
+
+#判断列表文件是否存在
+if [ ! -f "$1" ]; then
+        echo "$1 is not exist";
+        exit 1;
+fi
+
+file=$(cat $1);
+
+#循环文件列表并压缩文件
+for line in $file
+do
+tar -czvf $line.tar.gz $line
+if [ $? -eq 0 ];then
+rm -rf $line
+fi
+done

@@ -1,0 +1,2 @@
+echo "327680" > /proc/sys/net/ipv4/netfilter/ip_conntrack_max
+echo "10800" > /proc/sys/net/ipv4/netfilter/ip_conntrack_tcp_timeout_established

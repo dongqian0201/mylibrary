@@ -1,0 +1,4 @@
+#!/bin/bash
+tar -czf /usr/local/apache/logs/`date -d '1 days ago' -u '+%Y'`/`date -d '1 days ago' -u '+%m'`/`date -d '1 days ago' -u '+%d'`.tar.gz /usr/local/apache/logs/`date -d '1 days ago' -u '+%Y'`/`date -d '1 days ago' -u '+%m'`/`date -d '1 days ago' -u '+%d'` && rm -rf /usr/local/apache/logs/`date -d '1 days ago' -u '+%Y'`/`date -d '1 days ago' -u '+%m'`/`date -d '1 days ago' -u '+%d'`
+rm -rf /usr/local/apache/logs/`date -d '7 months ago' -u '+%Y'`/`date -d '7 months ago' -u '+%m'`.tar.gz
+rm -rf /usr/local/apache/logs/`date -d '13 months ago' -u '+%Y'`
