@@ -1,0 +1,6 @@
+JAVA_HOME=/usr/local/jdk1.6.0_45
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+PATH=$JAVA_HOME/bin:$PATH
+export  JAVA_HOME  CLASSPATH  PATH
+LD_LIBRARY_PATH=$CATALINA_HOME/lib:/usr/local/apr/lib:/usr/local/apr
+export LD_LIBRARY_PATH

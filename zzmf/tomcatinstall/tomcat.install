@@ -1,0 +1,74 @@
+#!/bin/bash
+cd `dirname $0`
+SCRIPT_DIR=`pwd`
+
+echo "SCRIPT_DIR="$SCRIPT_DIR
+#cronolog install
+cd $SCRIPT_DIR
+
+tar -xzf ./source/cronolog-1.6.2.tar.gz -C ./source/ > /dev/null
+cd ./source/cronolog-1.6.2
+./configure > /dev/null
+make && make install  > /dev/null
+echo "cronolog installed"
+
+echo $SCRIPT_DIR
+#jdk install
+cd $SCRIPT_DIR
+cp ./source/jdk-6u45-linux-x64.bin /usr/local/  > /dev/null
+
+cd /usr/local/
+./jdk-6u45-linux-x64.bin  > /dev/null
+
+#tomcat install
+cd $SCRIPT_DIR
+
+mkdir /opt/
+tar -xzf ./source/tomcat.tar.gz -C /opt/  > /dev/null
+
+#apr install
+cd $SCRIPT_DIR
+
+tar -xzf ./source/apr-1.5.2.tar.gz -C ./source/  > /dev/null
+cd ./source/apr-1.5.2/  > /dev/null
+./configure --prefix=/usr/local/apr  > /dev/null
+make && make install  > /dev/null
+
+cd $SCRIPT_DIR
+
+tar -xzf ./source/apr-iconv-1.2.1.tar.gz -C ./source  > /dev/null
+cd ./source/apr-iconv-1.2.1  > /dev/null
+./configure --prefix=/usr/local/apr-iconv --with-apr=/usr/local/apr  > /dev/null
+make && make install  > /dev/null
+
+cd $SCRIPT_DIR
+tar -xzf ./source/apr-util-1.5.4.tar.gz -C ./source  > /dev/null
+cd ./source/apr-util-1.5.4 
+./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr --with-apr-iconv=/usr/local/apr-iconv/bin/apriconv  > /dev/null
+make && make install  > /dev/null
+
+cd $SCRIPT_DIR
+tar -xzf ./source/tomcat-native.tar.gz -C ./source
+cd ./source/tomcat-native-1.1.33-src/jni/native
+./configure  --with-apr=/usr/local/apr/ --with-java-home=/usr/local/jdk1.6.0_45/  > /dev/null
+make && make install  > /dev/null
+
+#profile
+cd $SCRIPT_DIR
+cat ./profile >> /etc/profile
+source /etc/profile
+
+#echo "/opt/tomcat/bin/startup.sh" >> /etc/rc.local
+
+#rm -rf /opt/tomcat/bin/jsvc
+#cp ./source/jsvc /opt/tomcat/bin/
+
+#rm -rf /opt/tomcat/bin/daemon.sh
+#cp ./source/daemon.sh /opt/tomcat/bin/
+
+ln -s /opt/tomcat/bin/daemon.sh /etc/init.d/tomcat
+
+chkconfig --add tomcat
+chkconfig tomcat on
+
+useradd web -s /sbin/nologin

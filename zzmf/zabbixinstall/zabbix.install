@@ -1,0 +1,32 @@
+#!/bin/bash
+
+yum -y install mysql-dev gcc net-snmp-devel curl-devel > /dev/null
+
+useradd zabbix
+
+cd `dirname $0`
+
+SCRIPT_DIR=`pwd`
+
+cd $SCRIPT_DIR
+
+tar -xzvf zabbix-2.4.6.tar.gz > /dev/null
+cd zabbix-2.4.6
+
+./configure --prefix=/usr/local/zabbix --with-mysql --with-net-snmp --with-libcurl --enable-agent > /dev/null
+
+make && make install > /dev/null
+
+cd ..
+
+sed -i "s/HOSTNAME/`uname -n`/g" ./zabbix_agentd.conf
+
+sed -i "s/SERVERIP/`/sbin/ifconfig eth0 |grep "inet addr"| cut -f 2 -d ":"|cut -f 1 -d " "`/g" ./zabbix_agentd.conf
+
+rm -rf /usr/local/zabbix/etc/zabbix_agentd.conf
+
+mv ./zabbix_agentd.conf /usr/local/zabbix/etc/zabbix_agentd.conf
+
+/usr/local/zabbix/sbin/zabbix_agentd
+
+echo "/usr/local/zabbix/sbin/zabbix_agentd" >> /etc/rc.local
